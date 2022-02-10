@@ -1,0 +1,22 @@
+config BR2_PACKAGE_GR_IRIDIUM
+	bool "gr-iridium"
+	depends on BR2_PACKAGE_GNURADIO
+	select BR2_PACKAGE_GNURADIO_BLOCKS
+	select BR2_PACKAGE_GNURADIO_FFT
+	select BR2_PACKAGE_GNURADIO_FILTER
+	select BR2_PACKAGE_LIBVOLK
+	help
+	  Module providing blocks to build an Iridium burst detector and demodulator.
+
+	  https://github.com/muccc/gr-iridium
+
+if BR2_PACKAGE_GR_IRIDIUM
+
+config BR2_PACKAGE_GR_IRIDIUM_PYTHON
+	bool "python support"
+	depends on BR2_PACKAGE_GNURADIO_PYTHON
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  Enable Python support
+
+endif

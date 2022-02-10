@@ -1,0 +1,3 @@
+[submodule "buildroot"]
+	path = buildroot
+	url = git@git.cs.uni-kl.de:discosat/buildroot.git

@@ -1,0 +1,20 @@
+config BR2_PACKAGE_LIBVOLK
+	bool "libvolk"
+	depends on BR2_TOOLCHAIN_SUPPORTS_ALWAYS_LOCKFREE_ATOMIC_INTS # boost-filesystem
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_BOOST
+	select BR2_PACKAGE_BOOST_SYSTEM
+	select BR2_PACKAGE_BOOST_FILESYSTEM
+	select BR2_PACKAGE_LIBEVENT
+	help
+	  VOLK is the Vector-Optimized Library of Kernels. 
+	  It is a library that contains kernels of hand-written SIMD code 
+	  for different mathematical operations. Since each SIMD 
+	  architecture can be very different and no compiler has yet come 
+	  along to handle vectorization properly or highly efficiently,
+	  VOLK approaches the problem differently.
+
+	  https://github.com/gnuradio/volk
+
+comment "libvolk needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
