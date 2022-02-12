@@ -1,7 +1,9 @@
 start_file=start_cd.elf
 fixup_file=fixup_cd.dat
 
-kernel=Image
+# Boot u-boot first so we can run a/b slot
+disable_splash=1
+kernel=u-boot.bin
 
 # Disable overscan assuming the display supports displaying the full resolution
 # If the text shown on the screen disappears off the edge, comment this out

@@ -1,11 +1,13 @@
 # This file is heavily based on https://github.com/home-assistant/operating-system/blob/dev/Makefile
+DEPLOYMENT_MODE := dev
 BUILDDIR := $(shell pwd)
 BUILDROOT = $(BUILDDIR)/buildroot
 BUILDROOT_EXTERNAL = $(BUILDDIR)
 RELEASE_DIR = $(BUILDDIR)/release
 DEFCONFIG_DIR = $(BUILDROOT_EXTERNAL)/configs
 VERSION_DATE := $(shell date --utc +'%Y%m%d')
-VERSION_DEV := "dev$(VERSION_DATE)"
+VERSION := "$(DEPLOYMENT_MODE)-$(VERSION_DATE)-$(shell git rev-parse --short HEAD)"
+
 
 TARGETS := $(notdir $(patsubst %_defconfig,%,$(wildcard $(DEFCONFIG_DIR)/*_defconfig)))
 TARGETS_CONFIG := $(notdir $(patsubst %_defconfig,%-config,$(wildcard $(DEFCONFIG_DIR)/*_defconfig)))
@@ -32,8 +34,9 @@ $(TARGETS_CONFIG): %-config:
 
 $(TARGETS): %: $(RELEASE_DIR) %-config
 	@echo "build $@"
-	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) VERSION_DEV=$(VERSION_DEV)
+	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) VERSION=$(VERSION)
 	cp -f $(O)/images/satos_* $(RELEASE_DIR)/
+	cp -f $(O)/images/*.raucb $(RELEASE_DIR)/
 
 	# Do not clean when building for one target
 ifneq ($(words $(filter $(TARGETS),$(MAKECMDGOALS))), 1)
