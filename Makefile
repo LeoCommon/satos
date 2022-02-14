@@ -35,8 +35,8 @@ $(TARGETS_CONFIG): %-config:
 $(TARGETS): %: $(RELEASE_DIR) %-config
 	@echo "build $@"
 	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) VERSION=$(VERSION)
-	cp -f $(O)/images/satos_* $(RELEASE_DIR)/
-	cp -f $(O)/images/*.raucb $(RELEASE_DIR)/
+	mv -f $(O)/images/satos_* $(RELEASE_DIR)/
+	mv -f $(O)/images/*.raucb $(RELEASE_DIR)/
 
 	# Do not clean when building for one target
 ifneq ($(words $(filter $(TARGETS),$(MAKECMDGOALS))), 1)
