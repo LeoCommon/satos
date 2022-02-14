@@ -24,10 +24,10 @@ version=${VERSION}
 [bundle]
 format=verity
 [image.rootfs]
-filename=rootfs.squashfs
+filename=rootfs.ext4
 EOF
 
-    ln -L ${BINARIES_DIR}/rootfs.squashfs ${BINARIES_DIR}/temp-rootfs/
+    ln -L ${BINARIES_DIR}/rootfs.ext4 ${BINARIES_DIR}/temp-rootfs/
 
     # Generate OTA for rootfs
     ${HOST_DIR}/bin/rauc bundle ${RAUC_PKI_OPTIONS} ${BINARIES_DIR}/temp-rootfs/ ${ROOTFS_PATH}
