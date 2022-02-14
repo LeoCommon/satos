@@ -2,5 +2,5 @@
 # "selectablable" from within buildroots config menu
 
 source "$BR2_EXTERNAL_SATOS_PATH/package/python-scipy/Config.in"
-source "$BR2_EXTERNAL_SATOS_PATH/package/libvolk/Config.in"
+source "$BR2_EXTERNAL_SATOS_PATH/package/volk/Config.in"
 source "$BR2_EXTERNAL_SATOS_PATH/package/gr-iridium/Config.in"
