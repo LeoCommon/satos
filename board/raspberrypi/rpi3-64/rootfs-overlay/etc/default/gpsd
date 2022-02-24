@@ -1,0 +1,4 @@
+DEVICES="/dev/ttyUSB1"
+
+# Dont wait for clients to connect
+GPSD_OPTIONS="-n"

@@ -1,3 +1,6 @@
 [submodule "buildroot"]
 	path = buildroot
 	url = git@git.cs.uni-kl.de:discosat/buildroot.git
+[submodule "apogee"]
+	path = src/apogee
+	url = git@git.cs.uni-kl.de:discosat/apogee.git

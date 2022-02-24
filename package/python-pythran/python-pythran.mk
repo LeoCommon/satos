@@ -11,4 +11,12 @@ PYTHON_PYTHRAN_LICENSE = BSD-3-Clause
 HOST_PYTHON_PYTHRAN_DEPENDENCIES = host-python-beniget host-python-gast host-python-numpy host-python-ply
 PYTHON_PYTHRAN_LICENSE_FILES = LICENSE docs/LICENSE.rst
 
+# trick to locate 'lapack' and 'blas'
+define PYTHON_PYTHRAN_CONFIGURE_CMDS
+	rm -f $(@D)/site.cfg
+	echo "[DEFAULT]" >> $(@D)/site.cfg
+	echo "library_dirs = $(STAGING_DIR)/usr/lib" >> $(@D)/site.cfg
+	echo "include_dirs = $(STAGING_DIR)/usr/include" >> $(@D)/site.cfg
+endef
+
 $(eval $(host-python-package))

@@ -1,0 +1,2 @@
+# SIM7600E
+ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1e0e", ATTRS{idProduct}=="9001", SYMLINK+="sim7600e", ENV{SYSTEMD_WANTS}="usb-modem.service"

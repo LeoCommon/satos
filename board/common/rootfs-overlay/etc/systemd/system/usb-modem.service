@@ -1,0 +1,9 @@
+[Unit]
+Description=USB Modem initializing service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/modem_manager
+
+[Install]
+WantedBy=multi-user.target

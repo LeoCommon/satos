@@ -1,0 +1,6 @@
+config BR2_PACKAGE_DISCO_APOGEE
+	bool "disco-apogee"
+	help
+	  System and task management daemons for satos
+
+	  https://git.cs.uni-kl.de/discosat/apogee
