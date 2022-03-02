@@ -1,7 +1,7 @@
 config BR2_PACKAGE_DISCO_APOGEE
 	bool "disco-apogee"
 	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
-	depends on BR2_PACKAGE_HOST_GO
+	select BR2_PACKAGE_HOST_GO
 	help
 	  System and task management daemons for satos
 
