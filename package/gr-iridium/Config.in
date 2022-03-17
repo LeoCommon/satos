@@ -16,6 +16,7 @@ config BR2_PACKAGE_GR_IRIDIUM_PYTHON
 	bool "python support"
 	depends on BR2_PACKAGE_GNURADIO_PYTHON
 	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_SCIPY
 	help
 	  Enable Python support
 
