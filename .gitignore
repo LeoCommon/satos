@@ -14,4 +14,4 @@
 *~
 *.pyc
 release
-ota/*-key.pem
+ota/*.pem
