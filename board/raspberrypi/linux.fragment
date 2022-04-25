@@ -1,3 +1,4 @@
+# Required symbols for RAUC
 CONFIG_MD=y
 CONFIG_BLK_DEV_LOOP=y
 CONFIG_BLK_DEV_DM=y
@@ -10,7 +11,22 @@ CONFIG_SQUASHFS=y
 CONFIG_SQUASHFS_XATTR=y
 CONFIG_SQUASHFS_ZSTD=y
 
+# Force scheduler to performance
 CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE=y
+
+# Add required usb-modem symbols
+CONFIG_USB_SERIAL=y
+CONFIG_USB_SERIAL_WWAN=y
+CONFIG_USB_SERIAL_OPTION=y
+CONFIG_USBNET=y
+
+# Overlay file system support if needed
+OVERLAY_FS=y
+
+# Always load the broadcom WiFi driver for rpis
+CONFIG_BRCMFMAC=y
+
+# The following lines disable unused features to keep kernel size small
 
 # CONFIG_DEBUG_MISC is not set
 # CONFIG_DEBUG_PREEMPT is not set
@@ -50,12 +66,12 @@ CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE=y
 # CONFIG_BLK_DEV_INITRD is not set
 # CONFIG_SLUB_DEBUG is not set
 # CONFIG_PROFILING is not set
+# CONFIG_KVM is not set
 
-CONFIG_USB_SERIAL=y
-CONFIG_USB_SERIAL_WWAN=y
-CONFIG_USB_SERIAL_OPTION=y
-CONFIG_USBNET=y
+# Disable certain input devices
+# CONFIG_INPUT_MOUSEDEV is not set
+# CONFIG_INPUT_EVDEV is not set
+# CONFIG_INPUT_TOUCHSCREEN is not set
+# CONFIG_INPUT_MISC is not set
 
-OVERLAY_FS=y
-
-CONFIG_BRCMFMAC=y
+# CONFIG_BCM_VIDEOCORE is not set
