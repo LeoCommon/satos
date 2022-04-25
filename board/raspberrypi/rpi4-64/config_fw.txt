@@ -1,6 +1,6 @@
 # Firmware bootloader files
-start_file=start_cd.elf
-fixup_file=fixup_cd.dat
+start_file=start4cd.elf
+fixup_file=fixup4cd.dat
 
 # Boot u-boot first so we can run a/b slot
 disable_splash=1

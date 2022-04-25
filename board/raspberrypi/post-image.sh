@@ -2,7 +2,8 @@
 
 set -e
 
-BOARD_DIR="$(dirname $0)"
+# BOARD_DIR is set by the BR2_ROOTFS_POST_SCRIPT_ARGS post script argument
+BOARD_DIR="$2"
 BOARD_NAME="$(basename ${BOARD_DIR})"
 GENIMAGE_CFG="${BOARD_DIR}/genimage-${BOARD_NAME}.cfg"
 GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
