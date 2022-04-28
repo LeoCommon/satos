@@ -1,2 +1,2 @@
-/etc/NetworkManager/system-connections r 600 0 0 - - - - -
-/etc/NetworkManager/system-connections/congstar.nmconnection f 600 0 0 - - - - -
+/data/system-connections r 600 0 0 - - - - -
+/data/system-connections/congstar.nmconnection f 600 0 0 - - - - -
