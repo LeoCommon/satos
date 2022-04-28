@@ -21,7 +21,7 @@ CONFIG_USB_SERIAL_OPTION=y
 CONFIG_USBNET=y
 
 # Overlay file system support if needed
-OVERLAY_FS=y
+CONFIG_OVERLAY_FS=y
 
 # Always load the broadcom WiFi driver for rpis
 CONFIG_BRCMFMAC=y
