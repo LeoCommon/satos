@@ -1,13 +1,12 @@
 [Unit]
 Description=Pull jobs from the discosat-server and manage them.
-Requires=chrony.service gpsd.service NetworkManager.service rauc.service
-
+Wants=time-sync.target network-online.target
+After=time-sync.target network-online.target gpsd.service rauc.service
 
 [Service]
-Type=forking
+Type=simple
 ExecStart=/usr/bin/apogee-client
 Restart=always
-
 
 [Install]
 WantedBy=multi-user.target
