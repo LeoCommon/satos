@@ -5,6 +5,7 @@ datapartition="$sdcard""p4"
 mountpoint="/media/$USER/data"
 sourcefolder="./board/common/rootfs-overlay/data/."
 targetfolder="$mountpoint/."
+sys_con_folder="$targetfolder/system-connections/"
 
 # Part 1: copy image on sd-card
 # check if sd-card available
@@ -58,6 +59,9 @@ fi
 echo "Info: copy files..."
 sudo cp -r "$sourcefolder" "$targetfolder"
 sleep 1
+# change chmod of all files in system-connections-foder
+echo "Info: modify access-rights for network-files..."
+sudo find "$sys_con_folder" "-type" "f" -exec chmod "0600" "{}" \;
 # unmount it
 if [[ ! $(sudo umount "$datapartition") ]]; then
     echo "Info: unmounting worked." 

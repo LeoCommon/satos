@@ -4,3 +4,6 @@
 [submodule "apogee"]
 	path = src/apogee
 	url = git@git.cs.uni-kl.de:discosat/apogee.git
+[submodule "src/gr-iridium"]
+	path = src/gr-iridium
+	url = git@git.cs.uni-kl.de:ej_research/discosat/discosat_gr_iridium.git
