@@ -1,5 +1,5 @@
 [connection]
-id=congstar
+id=MobileData1
 uuid=a1385913-6ccc-4d83-bd3a-272325d6c60c
 type=gsm
 autoconnect=true
