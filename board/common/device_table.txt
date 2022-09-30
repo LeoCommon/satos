@@ -1,2 +1,2 @@
 /data/system-connections r 600 0 0 - - - - -
-/data/system-connections/congstar.nmconnection f 600 0 0 - - - - -
+/data/system-connections/gsm0.nmconnection f 600 0 0 - - - - -
