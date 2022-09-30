@@ -7,6 +7,9 @@ sourcefolder="./board/common/rootfs-overlay/data/."
 targetfolder="$mountpoint/."
 sys_con_folder="$targetfolder/system-connections/"
 
+# get sudo rigthts (for later)
+sudo echo " << Start copy-script >> "
+
 # Part 1: copy image on sd-card
 # check if sd-card available
 if [[ -b "$sdcard" ]]; then
@@ -71,7 +74,9 @@ if [[ ! $(sudo umount "$datapartition") ]]; then
     fi
 else
     echo "Error: could not unmount SD-card."
+    exit 1
 fi
+echo " << Finished! Everything is completed, you can remove the SD-card. >>"
 
 
 
