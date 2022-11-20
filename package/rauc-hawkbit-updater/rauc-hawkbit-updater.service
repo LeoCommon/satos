@@ -1,0 +1,26 @@
+[Unit]
+Description=HawkBit client for Rauc
+After=network-online.target rauc.service
+Wants=network-online.target
+
+[Service]
+User=rauc-hawkbit
+Group=rauc-hawkbit
+AmbientCapabilities=CAP_SYS_BOOT
+RuntimeDirectory=rauc-hawkbit
+RuntimeDirectoryMode=0750
+ExecStartPre=/usr/bin/satos-genconf \
+    --env-file=/data/discosat-config/secrets/.hawkbit \
+    --template=/usr/share/satos-genconf/templates/rauc-hawkbit-updater.ini.j2 \
+    --output-file=/run/rauc-hawkbit/updater.conf
+ExecStart=/usr/bin/rauc-hawkbit-updater -c /run/rauc-hawkbit/updater.conf -s
+TimeoutSec=60s
+WatchdogSec=5m
+Restart=on-failure
+RestartSec=1m
+NotifyAccess=main
+ProtectSystem=full
+Nice=10
+
+[Install]
+WantedBy=multi-user.target

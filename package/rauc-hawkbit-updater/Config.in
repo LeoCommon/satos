@@ -1,0 +1,11 @@
+config BR2_PACKAGE_RAUC_HAWKBIT_UPDATER
+	bool "rauc-hawkbit-updater"
+	depends on BR2_PACKAGE_RAUC
+	select BR2_PACKAGE_RAUC_JSON
+	select BR2_PACKAGE_RAUC_NETWORK
+	help
+	  The RAUC hawkBit updater is a simple commandline tool / daemon written in C (glib). 
+	  It is a port of the RAUC hawkBit Client written in Python. 
+	  The daemon runs on your target and operates as an interface between the RAUC D-Bus API and the hawkBit DDI API.
+
+	  https://git.cs.uni-kl.de/discosat/rauc-hawkbit
