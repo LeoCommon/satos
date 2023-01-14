@@ -1,0 +1,9 @@
+config BR2_PACKAGE_SATOS_GENCONF
+	bool "satos-genconf"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_DOTENV
+	select BR2_PACKAGE_PYTHON_JINJA2
+	help
+	  Tool for automatically generating config files for certain services like the rauc-hawkbit updater.
+
+	  https://git.cs.uni-kl.de/discosat/satos_genconf

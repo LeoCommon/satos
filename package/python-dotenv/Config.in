@@ -1,0 +1,8 @@
+
+config BR2_PACKAGE_PYTHON_DOTENV
+	bool "python-dotenv"
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  Read key-value pairs from a .env file and set them as environment variables
+
+	  https://pypi.org/project/python-dotenv/
