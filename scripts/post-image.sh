@@ -14,3 +14,4 @@ BOARD_NAME="$(basename ${BOARD_DIR})"
 # Run the required RAUC tasks
 rauc_generate_root_bundle
 rauc_generate_boot_bundle
+rauc_generate_ota_bundle
