@@ -1,0 +1,8 @@
+[Unit]
+Description=Fake Hardware Clock
+After=fake-hwclock.service
+Requires=fake-hwclock.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/fake-hwclock /data/fake-hwclock

@@ -1,0 +1,12 @@
+[Unit]
+Description=Fake Hardware Clock
+After=satos-setup.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/fake-hwclock /data/fake-hwclock
+ExecStop=/usr/bin/fake-hwclock /data/fake-hwclock
+RemainAfterExit=yes
+
+[Install]
+WantedBy=sysinit.target

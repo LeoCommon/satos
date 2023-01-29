@@ -1,0 +1,8 @@
+config BR2_PACKAGE_FAKE_HWCLOCK
+	bool "fake-hwclock"
+	depends on BR2_INIT_SYSTEMD
+	help
+     Helper systemd scripts to ensure (mostly) forward moving time.
+
+comment "fake-hwclock requires the systemd init system"
+	depends on !BR2_INIT_SYSTEMD
