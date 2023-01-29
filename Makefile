@@ -21,9 +21,15 @@ endif
 
 .NOTPARALLEL: $(TARGETS) $(TARGETS_CONFIG) all
 
-.PHONY: $(TARGETS) $(TARGETS_CONFIG) all clean help
+.PHONY: $(TARGETS) $(TARGETS_CONFIG) all qemu qemu-dev clean help
 
 all: $(TARGETS)
+
+qemu:
+	./qemu/run_qemu_rpi3.sh
+
+qemu-dev:
+	./qemu/run_qemu_rpi3.sh -k
 
 $(RELEASE_DIR):
 	mkdir -p $(RELEASE_DIR)
@@ -54,3 +60,5 @@ help:
 	@echo "Run 'make all' to build all target images."
 	@echo "Run 'make clean' to clean the build output."
 	@echo "Run 'make <target>-config' to configure buildroot for a target."
+	@echo "Run 'make qemu' to run the qemu rpi3b emulator in interactive mode"
+	@echo "Run 'make qemu-dev' to run the qemu rpi3b emulator in dev mode (keeps all files)."
