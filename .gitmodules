@@ -1,12 +1,12 @@
 [submodule "buildroot"]
 	path = buildroot
-	url = git@git.cs.uni-kl.de:discosat/buildroot.git
+	url = ../buildroot.git
 [submodule "apogee"]
 	path = src/apogee
-	url = git@git.cs.uni-kl.de:discosat/apogee.git
+	url = ../apogee.git
 [submodule "gr-iridium"]
 	path = src/gr-iridium
-	url = git@git.cs.uni-kl.de:discosat/gr_iridium.git
+	url = ../gr_iridium.git
 [submodule "src/satos_genconf"]
 	path = src/satos_genconf
-	url = git@git.cs.uni-kl.de:discosat/satos_genconf.git
+	url = ../satos_genconf.git
