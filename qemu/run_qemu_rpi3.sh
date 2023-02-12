@@ -103,7 +103,7 @@ function handle_usb_stick() {
   ld=$(sudo losetup -f $QEMU_USB_PATH --show | tr -d -c 0-9)
 
   # Never optimize this to use the actual $LD /dev/loopXY name to avoid partitioning disks on failure
-  sudo mkfs.ext4 -L discosat-config -F /dev/loop$ld
+  sudo mkfs.ext4 -L discosat-data -F /dev/loop$ld
 
   # Create temporary mount point
   mkdir -p $TMP_FOLDER/mnt
@@ -200,11 +200,10 @@ echo "Launching qemu!"
 # -device usb-host,vendorid=XXXX,productid=XXXX 
 sudo qemu-system-aarch64 -M $machine -kernel $kernel -dtb $dtb \
   -drive file=$QEMU_IMAGE_PATH,if=sd,format=raw \
-  -append "console=ttyAMA0 root=/dev/mmcblk0p$target_slot rw rootwait rootfstype=ext4 dwc_otg.fiq_fsm_enable=0 rauc.slot=$target_slot_alpha" \
+  -append "console=ttyAMA0 root=/dev/mmcblk0p$target_slot rw rootwait rootfstype=erofs dwc_otg.fiq_fsm_enable=0 rauc.slot=$target_slot_alpha" \
   -device usb-net,netdev=net0 -netdev user,id=net0 \
   -drive file=$QEMU_USB_PATH,if=none,format=raw,node-name=config_usb -device usb-storage,drive=config_usb \
   -nographic
 
 # To simulate a working U_Boot environment execute the following commands
 # fw_setenv BOOT_A_LEFT 2 && fw_setenv BOOT_B_LEFT 1 && fw_setenv BOOT_ORDER 'A B'
-# mount -o remount, rw /

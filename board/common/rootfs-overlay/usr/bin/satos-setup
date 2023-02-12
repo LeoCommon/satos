@@ -1,0 +1,57 @@
+#!/bin/bash
+# This script is going to set-up any persistent directories and fix the permissions of required files.
+# It runs after the /data partition is mounted.
+
+# Create a directory if it does not exist already
+create_directory() {
+  if [ ! -d "$1" ]; then
+    mkdir -p "$1"
+  fi
+}
+
+# Change permissions of a single file
+change_permissions() {
+  file_path=$1
+  mode=$2
+  user=${3:-}
+  group=${4:-}
+  chmod_options=""
+  chmod $mode $file_path
+  if [ -n "$user" ] && [ -n "$group" ]; then
+    chown $user:$group $file_path
+  fi
+}
+
+# Required persistent directories
+dirs=(
+    "/data/chrony/" 
+    "/data/rauc/" 
+    "/data/config/system-connections/"
+    "/data/config/secrets/"
+    "/data/log/journal/"
+)
+
+# Create all directories from the above list
+for dir in "${dirs[@]}"; do
+  create_directory "$dir"
+done
+
+
+# Copy the time seed file from the fake_hwclock if:
+# 1) The file does not exist in /data
+# 2) The file does exist but has an older modification time
+if [ -f /etc/fake-hwclock.seed ] && ([ ! -f /data/fake-hwclock ] \
+    || [ /etc/fake-hwclock.seed -nt /data/fake-hwclock ]); then
+  # Add -p to preserve the time, as the system time might not be correct!
+  cp -p /etc/fake-hwclock.seed /data/fake-hwclock
+fi
+
+# Make sure network manager configs have the proper permissions
+chmod -R 0600 /data/config/system-connections/
+
+# Assign proper permissions to secret files
+# Config directory itself will be world-readable
+chmod -R 0755 /data/config
+
+# Protect the hawkbit secrets
+change_permissions /data/config/secrets/.hawkbit 0660 rauc-hawkbit rauc-hawkbit

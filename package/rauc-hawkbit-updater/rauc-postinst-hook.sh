@@ -11,12 +11,12 @@
         SYSTEMD_EXEC_PID=184
         RAUC_MOUNT_PREFIX=/run/rauc
         RAUC_BUNDLE_MOUNT_POINT=/run/rauc/bundle
-        RAUC_IMAGE_NAME_1=/run/rauc/bundle/rootfs.ext4
-        RAUC_SLOT_TYPE_1=ext4
+        RAUC_IMAGE_NAME_1=/run/rauc/bundle/rootfs.img
+        RAUC_SLOT_TYPE_1=raw
         JOURNAL_STREAM=8:1341
         RAUC_SLOT_TYPE_2=boot-mbr-switch
         RAUC_SLOT_BOOTNAME_1=B
-        RAUC_SLOT_TYPE_3=ext4
+        RAUC_SLOT_TYPE_3=raw
         RAUC_IMAGE_DIGEST_1=f4a64a2e1aa76cbab4ac81c273e003a5c98c7c9e4a7420f684a88199f6aa2e0e
         RAUC_SLOT_BOOTNAME_2=
         RAUC_SLOT_BOOTNAME_3=A

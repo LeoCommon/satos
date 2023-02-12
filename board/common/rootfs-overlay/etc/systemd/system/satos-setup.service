@@ -1,0 +1,9 @@
+[Unit]
+Description=Set up the required permissions/folders for satos
+After=data.mount
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/bin/satos-setup
+RemainAfterExit=yes

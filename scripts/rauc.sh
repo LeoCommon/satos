@@ -24,10 +24,12 @@ version=${VERSION}
 [bundle]
 format=verity
 [image.rootfs]
-filename=rootfs.ext4
+filename=rootfs.img
+adaptive=block-hash-index
 EOF
 
-    ln -L ${BINARIES_DIR}/rootfs.ext4 ${BINARIES_DIR}/temp-rootfs/
+    # This has to end on .img for rauc to accept it
+    ln -L ${BINARIES_DIR}/rootfs.erofs ${BINARIES_DIR}/temp-rootfs/rootfs.img
 
     # Generate OTA for rootfs
     ${HOST_DIR}/bin/rauc bundle ${RAUC_PKI_OPTIONS} ${BINARIES_DIR}/temp-rootfs/ ${ROOTFS_PATH}
@@ -73,11 +75,13 @@ format=verity
 [image.bootloader]
 filename=boot.vfat
 [image.rootfs]
-filename=rootfs.ext4
+filename=rootfs.img
+adaptive=block-hash-index
 EOF
 
     ln -L ${BINARIES_DIR}/boot.vfat ${BINARIES_DIR}/temp-fullfs/
-    ln -L ${BINARIES_DIR}/rootfs.ext4 ${BINARIES_DIR}/temp-fullfs/
+    # This has to end on .img for rauc to accept it
+    ln -L ${BINARIES_DIR}/rootfs.erofs ${BINARIES_DIR}/temp-fullfs/rootfs.img
 
     # Generate rauc bundle for the ota
     ${HOST_DIR}/bin/rauc bundle ${RAUC_PKI_OPTIONS} ${BINARIES_DIR}/temp-fullfs/ ${FULLFS_PATH}
