@@ -14,3 +14,6 @@ dtoverlay=miniuart-bt
 
 # enable 64bits support
 arm_64bit=1
+
+# enable the watchdog
+dtparam=watchdog
