@@ -26,6 +26,7 @@ endif
 all: $(TARGETS)
 
 qemu:
+	$(MAKE) rpi3_64
 	./qemu/run_qemu_rpi3.sh
 
 qemu-dev:
