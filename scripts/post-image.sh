@@ -8,6 +8,12 @@ BOARD_NAME="$(basename ${BOARD_DIR})"
 . "${BR2_EXTERNAL_SATOS_PATH}/meta"
 . "${BOARD_DIR}/meta"
 
+# QEMU BUILD detected
+if [ ! -z "$QEMU_BUILD" ]; then
+    echo "QEMU_BUILD detected not generating bundles"
+    exit 0
+fi
+
 # Include the rauc script
 . "${SCRIPT_DIR}/rauc.sh"
 
