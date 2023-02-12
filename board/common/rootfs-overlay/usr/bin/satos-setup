@@ -26,6 +26,7 @@ change_permissions() {
 dirs=(
     "/data/chrony/" 
     "/data/rauc/" 
+    "/data/config/apogee/"
     "/data/config/system-connections/"
     "/data/config/secrets/"
     "/data/log/journal/"
@@ -55,3 +56,7 @@ chmod -R 0755 /data/config
 
 # Protect the hawkbit secrets
 change_permissions /data/config/secrets/.hawkbit 0660 rauc-hawkbit rauc-hawkbit
+
+# Secure the apogee files
+chown -R apogee:apogee /data/config/apogee/
+chmod -R 0660 /data/config/apogee/

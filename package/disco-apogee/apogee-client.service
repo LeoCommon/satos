@@ -1,12 +1,21 @@
 [Unit]
 Description=Pull jobs from the discosat-server and manage them.
-Wants=time-sync.target network-online.target
-After=time-sync.target network-online.target
+Wants=time-sync.target network-online.target rauc.service
+After=time-sync.target network-online.target rauc.service
 
 [Service]
+User=apogee
+Group=apogee
+RuntimeDirectoryMode=0660
+AmbientCapabilities=CAP_SYS_BOOT
 Type=simple
 ExecStart=/usr/bin/apogee-client
 Restart=always
+RestartPreventExitStatus=0
+WatchdogSec=5m
+RestartSec=15s
+NotifyAccess=main
+ProtectSystem=full
 
 [Install]
 WantedBy=multi-user.target
