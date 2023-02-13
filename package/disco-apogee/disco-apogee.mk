@@ -20,10 +20,14 @@ define DISCO_APOGEE_USERS
 	apogee -1 apogee -1 * - - - Apogee daemon user
 endef
 
-# Install the systemd-service
+# Install the systemd-service and the required policy kit rules
 define DISCO_APOGEE_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 644 $(BR2_EXTERNAL_SATOS_PATH)/package/disco-apogee/apogee-client.service \
+	$(INSTALL) -D -m 644 $(DISCO_APOGEE_PKGDIR)/apogee-client.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/apogee-client.service
+
+	mkdir -p $(TARGET_DIR)/etc/polkit-1/rules.d
+	$(INSTALL) -D -m 644 $(DISCO_APOGEE_PKGDIR)disco-apogee.rules \
+		$(TARGET_DIR)/etc/polkit-1/rules.d/10-disco-apogee.rules
 endef
 
 $(eval $(golang-package))
