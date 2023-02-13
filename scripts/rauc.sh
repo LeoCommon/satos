@@ -87,7 +87,7 @@ EOF
     ${HOST_DIR}/bin/rauc bundle ${RAUC_PKI_OPTIONS} ${BINARIES_DIR}/temp-fullfs/ ${FULLFS_PATH}
 
     # Symlink latest ota for board
-    ln -L ${ROOTFS_PATH} ${BINARIES_DIR}/satos-${BOARD_NAME}-latest-ota.raucb
+    ln -L ${FULLFS_PATH} ${BINARIES_DIR}/satos-${BOARD_NAME}-latest-ota.raucb
 }
 
 function rauc_copy_keyring {
