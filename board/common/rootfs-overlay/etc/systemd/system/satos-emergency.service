@@ -1,9 +1,11 @@
 [Unit]
-Description=The SATOS emergency reboot service
+Description=SATOS emergency handler
 After=emergency.target
 
 # Sleep for 10 seconds and reboot
 # We need the slot to change in case its a software error
+# todo: This service needs to be more elaborate
+# E.g 1) Try to get network running 2) Search for updates || Gasp of death
 [Service]
 ExecStart=sleep 10 ; systemctl reboot 
 Type=oneshot

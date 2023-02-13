@@ -2,20 +2,23 @@
 Description=Pull jobs from the discosat-server and manage them.
 Wants=time-sync.target network-online.target rauc.service
 After=time-sync.target network-online.target rauc.service
+OnFailure=satos-emergency.service
+StartLimitIntervalSec=60
+StartLimitBurst=3
 
 [Service]
 User=apogee
 Group=apogee
 RuntimeDirectoryMode=0660
 AmbientCapabilities=CAP_SYS_BOOT
+NotifyAccess=exec
+ProtectSystem=full
 Type=simple
 ExecStart=/usr/bin/apogee-client
 Restart=always
 RestartPreventExitStatus=0
+RestartSec=15
 WatchdogSec=5m
-RestartSec=15s
-NotifyAccess=main
-ProtectSystem=full
 
 [Install]
 WantedBy=multi-user.target
