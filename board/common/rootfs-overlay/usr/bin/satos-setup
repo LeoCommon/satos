@@ -47,12 +47,12 @@ if [ -f /etc/fake-hwclock.seed ] && ([ ! -f /data/fake-hwclock ] \
   cp -p /etc/fake-hwclock.seed /data/fake-hwclock
 fi
 
-# Make sure network manager configs have the proper permissions
-chmod -R 0600 /data/config/system-connections/
-
 # Assign proper permissions to secret files
 # Config directory itself will be world-readable
 chmod -R 0755 /data/config
+
+# Make sure network manager configs have the proper permissions
+chmod -R 0600 /data/config/system-connections/
 
 # Protect the hawkbit secrets
 change_permissions /data/config/secrets/.hawkbit 0660 rauc-hawkbit rauc-hawkbit
