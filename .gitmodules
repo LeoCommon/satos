@@ -4,9 +4,6 @@
 [submodule "apogee"]
 	path = src/apogee
 	url = ../apogee.git
-[submodule "gr-iridium"]
-	path = src/gr-iridium
-	url = ../gr_iridium.git
 [submodule "src/satos_genconf"]
 	path = src/satos_genconf
 	url = ../satos_genconf.git

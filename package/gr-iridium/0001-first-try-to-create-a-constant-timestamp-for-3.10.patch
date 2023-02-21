@@ -1,0 +1,34 @@
+From 36c4eb9a1d60a27910d72b07bfc42284b6a957d9 Mon Sep 17 00:00:00 2001
+From: Eric Jedermann <jedermann@cs.uni-kl.de>
+Date: Tue, 21 Jul 2023 20:48:44 +0100
+Subject: [PATCH] first try to create a constant timestamp for 3.10
+
+---
+ lib/fft_burst_tagger_impl.cc | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
+
+diff --git a/lib/fft_burst_tagger_impl.cc b/lib/fft_burst_tagger_impl.cc
+index 30d251d..b6583b4 100644
+--- a/lib/fft_burst_tagger_impl.cc
++++ b/lib/fft_burst_tagger_impl.cc
+@@ -425,13 +425,10 @@ void fft_burst_tagger_impl::tag_new_bursts(void)
+ 
+         const uint64_t offset = b.start - d_last_rx_time_offset;
+ 
+-        // Convert the offset in samples into a timestamp in nanoseconds.
+-        // offset * 1000000000 can become larger than 2**64, so we need to scale it
+-        // together with the sample rate. This means the sample rate must be a multiple of
+-        // 100000
+-        const uint64_t timestamp =
+-            d_last_rx_time_timestamp +
+-            (offset * (1000000000ULL / 100000)) / (d_sample_rate / 100000);
++        // timestamp in nanoseconds.
++        const uint64_t timestamp = std::chrono::duration_cast<std::chrono::nanoseconds>(
++            std::chrono::high_resolution_clock::now().time_since_epoch())
++            .count();
+ 
+         pmt::pmt_t value = pmt::make_dict();
+         value = pmt::dict_add(value, pmt::mp("id"), pmt::from_uint64(b.id));
+-- 
+2.39.1
+
