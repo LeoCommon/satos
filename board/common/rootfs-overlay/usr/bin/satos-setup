@@ -37,6 +37,17 @@ for dir in "${dirs[@]}"; do
   create_directory "$dir"
 done
 
+# Store the machine-id in the u-boot environment
+# This is required for consistent journaling and more
+MACHINE_ID=$(cat /etc/machine-id)
+if [ -e /usr/sbin/fw_setenv ]; then
+  # We have to use a different lock file as the default in /var is not ready before mounting the filesystems finishes
+  # This should not be a problem, as nothing else can use this tool at this time
+  if [ "$(fw_printenv -l /tmp -n MACHINE_ID)" != "${MACHINE_ID}" ]; then
+    echo "saving machine id to u-boot ${MACHINE_ID}"
+    fw_setenv -l /tmp MACHINE_ID "${MACHINE_ID}"
+  fi
+fi
 
 # Copy the time seed file from the fake_hwclock if:
 # 1) The file does not exist in /data
