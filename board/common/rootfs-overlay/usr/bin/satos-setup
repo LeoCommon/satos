@@ -58,6 +58,9 @@ if [ -f /etc/fake-hwclock.seed ] && ([ ! -f /data/fake-hwclock ] \
   cp -p /etc/fake-hwclock.seed /data/fake-hwclock
 fi
 
+# Chrony needs permissions to save the drift files
+chown -R chrony:chrony /data/chrony/
+
 # Assign proper permissions to secret files
 # Config directory itself will be world-readable
 chmod -R 0755 /data/config
