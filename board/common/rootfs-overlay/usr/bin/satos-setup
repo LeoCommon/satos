@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # This script is going to set-up any persistent directories and fix the permissions of required files.
 # It runs after the /data partition is mounted.
 
