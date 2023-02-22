@@ -13,7 +13,7 @@ GR_IRIDIUM_LICENSE = GPL-3.0+
 GR_IRIDIUM_LICENSE_FILES = README.md
 
 # gr-iridium prevents doing an in-source-tree build
-GR_IRIDIUM_SUPPORTS_IN_SOURCE_BUILD = YES
+GR_OSMOSDR_SUPPORTS_IN_SOURCE_BUILD = NO
 
 GR_IRIDIUM_DEPENDENCIES = gnuradio host-python3 volk
 
