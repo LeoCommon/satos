@@ -21,12 +21,18 @@ define FAKE_HWCLOCK_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D)
 endef
 
+# Use the SOURCE_DATE_EPOCH if the build is reproducible
+ifeq ($(BR2_REPRODUCIBLE),y)
+FAKEHW_SET_TIME = touch -d @$(SOURCE_DATE_EPOCH)
+else
+FAKEHW_SET_TIME = touch
+endif
+
 # Install the binary and generate an empty fake-hwclock.seed file
-# It will have the current build machine timestamp stored as modification time
-# This time is updated within the post-build script
+# It will have the current build machine timestamp or the reproducible source date stored 
 define FAKE_HWCLOCK_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 $(@D)/fake-hwclock $(TARGET_DIR)/usr/bin/fake-hwclock
-	touch $(TARGET_DIR)/etc/fake-hwclock.seed
+	$(FAKEHW_SET_TIME) $(TARGET_DIR)/etc/fake-hwclock.seed
 endef
 
 $(eval $(generic-package))

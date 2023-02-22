@@ -12,12 +12,6 @@ BOARD_NAME="$(basename ${BOARD_DIR})"
 # Run the required RAUC tasks
 rauc_copy_keyring
 
-# Modify filetime for fake-hwclock seed file if it exists
-if [ -e ${TARGET_DIR}/etc/fake-hwclock.seed ]; then
-    touch ${TARGET_DIR}/etc/fake-hwclock.seed
-    echo "Updated timestamp from fake-hwclock.seed file"
-fi
-
 # QEMU BUILD detected
 if [ ! -z "$QEMU_BUILD" ]; then
     echo "QEMU_BUILD detected <modifying and exiting>"
