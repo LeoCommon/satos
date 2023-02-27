@@ -45,9 +45,9 @@ buildroot tree.
 Config adjustments can be made by first invoking the make command for the specific target, cancelling the build with `CTRL + C` and then executing `make menuconfig` or `make xconfig`. For more specific adjustments refer to the [Buildroot manual](https://buildroot.org/downloads/manual/manual.html)
 
 ## Installation
-For the `rpi3_64` the resulting image can be installed onto a SD-Card using the following commands
+The resulting image can be installed onto a SD-Card using the following commands
 ```
-sudo dd if=release/satos_rpi3_64_sdcard.img of=/dev/mmcblk0 bs=4M
+sudo dd if=release/sdcard.img of=/dev/mmcblk0 bs=4M
 sync
 ```
 

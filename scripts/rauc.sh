@@ -1,95 +1,158 @@
 #!/bin/bash
 set -e
 
-RAUC_PKI_OPTIONS="--cert ${BR2_EXTERNAL_SATOS_PATH}/ota/dev-ca.pem --key ${BR2_EXTERNAL_SATOS_PATH}/ota/dev-key.pem"
-RAUC_CERT_NAME="${BR2_EXTERNAL_SATOS_PATH}/ota/dev-ca.pem"
-RAUC_BUNDLE_BASE_FILENAME="satos-${BOARD_NAME}-${VERSION}"
+# The base file name
+RAUC_BUNDLE_PREFIX=satos-${BOARD_NAME}
+RAUC_BUNDLE_BASE_FILENAME="${RAUC_BUNDLE_PREFIX}-${VERSION}"
+RAUC_VERSION=${VERSION:-${BR2_VERSION_FULL}}
 
-if [ "$DEPLOYMENT_MODE" == "production" ]; then
-    RAUC_PKI_OPTIONS="--cert ${BR2_EXTERNAL_SATOS_PATH}/ota/prod-ca.pem --key ${BR2_EXTERNAL_SATOS_PATH}/ota/prod-key.pem" 
-    RAUC_CERT_NAME="${BR2_EXTERNAL_SATOS_PATH}/ota/prod-ca.pem"
+RAUC_CERT_PATH="${BR2_EXTERNAL_SATOS_PATH}/ota/dev-ca.pem"
+RAUC_KEY_PATH="${BR2_EXTERNAL_SATOS_PATH}/ota/dev-key.pem"
+RAUC_KEYRING_PATH="${RAUC_CERT_PATH}" # No keyring for development builds!
+
+if [[ "${DEPLOYMENT_MODE:-}" == "production" ]]; then
+	RAUC_CERT_PATH="${BR2_EXTERNAL_SATOS_PATH}/ota/prod-ca.pem"
+	RAUC_KEY_PATH="${BR2_EXTERNAL_SATOS_PATH}/ota/prod-key.pem"
+	RAUC_KEYRING_PATH="${BR2_EXTERNAL_SATOS_PATH}/ota/prod-keyring.pem"
 fi
 
+RAUC_PKI_OPTIONS="--cert ${RAUC_CERT_PATH} --keyring ${RAUC_KEYRING_PATH} --key ${RAUC_KEY_PATH}"
 
-function rauc_generate_root_bundle {
-    ROOTFS_PATH=${BINARIES_DIR}/${RAUC_BUNDLE_BASE_FILENAME}-rootfs.raucb
-    [ -e ${ROOTFS_PATH} ] && rm -rf ${ROOTFS_PATH}
-    [ -e ${BINARIES_DIR}/temp-rootfs ] && rm -rf ${BINARIES_DIR}/temp-rootfs
-    mkdir -p ${BINARIES_DIR}/temp-rootfs
+# Inspired by https://github.com/cdsteinkuehler/br2rauc/blob/ebe5fd8f96ef1b0ceb1c8d4c91d9730d4162f3dc/board/raspberrypi/post-image.sh#L89
+# This function allows sdcard images to have proper state files
+function rauc_generate_status_file_from_ota {
+	OTA_BUNDLE_PATH=${BINARIES_DIR}/${RAUC_BUNDLE_BASE_FILENAME}-ota.raucb
 
-    cat >> ${BINARIES_DIR}/temp-rootfs/manifest.raucm << EOF 
-[update]
-compatible=satos-${BOARD_NAME}
-version=${VERSION}
-[bundle]
-format=verity
-[image.rootfs]
-filename=rootfs.img
-adaptive=block-hash-index
-EOF
+	# Use source_date_epoch if set
+	if [ ! -z ${SOURCE_DATE_EPOCH:-} ]; then
+		INSTALL_TIME=$(date -d @${SOURCE_DATE_EPOCH} -u +"%Y-%m-%dT%H:%M:%SZ")
+	else
+		INSTALL_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+	fi
 
-    # This has to end on .img for rauc to accept it
-    ln -L ${BINARIES_DIR}/rootfs.erofs ${BINARIES_DIR}/temp-rootfs/rootfs.img
+	# Create a staging folder and make it deletes itself upon exit
+	RAUC_STAGING_FOLDER=${BINARIES_DIR}/rauc
+	rm -rf "${RAUC_STAGING_FOLDER}"
+	mkdir -p ${RAUC_STAGING_FOLDER}
+	trap 'rm -rf "${RAUC_STAGING_FOLDER}"' EXIT
 
-    # Generate OTA for rootfs
-    ${HOST_DIR}/bin/rauc bundle ${RAUC_PKI_OPTIONS} ${BINARIES_DIR}/temp-rootfs/ ${ROOTFS_PATH}
-}
+	# Run the info command on the bundle to get the required variables
+	eval $(rauc --keyring ${RAUC_KEYRING_PATH} --output-format=shell info ${OTA_BUNDLE_PATH})
 
+	# Check if the image is adaptive, and if it is set up and extract the bundle
+	if compgen -A variable | grep -q RAUC_IMAGE_ADAPTIVE_; then
+		echo "At least one image is adaptive, executing extra logic"
+		BUNDLE_WORKDIR=${BINARIES_DIR}/temp-bundle
+		mkdir -p ${BUNDLE_WORKDIR}
+		trap 'rm -rf "${BUNDLE_WORKDIR}"' EXIT
 
-function rauc_generate_boot_bundle {
-    # Generate a RAUC update bundle for the boot filesystem
-    BOOTFS_PATH=${BINARIES_DIR}/${RAUC_BUNDLE_BASE_FILENAME}-bootfs.raucb
-    [ -e ${BOOTFS_PATH} ] && rm -rf ${BOOTFS_PATH}
-    [ -e ${BINARIES_DIR}/temp-bootfs ] && rm -rf ${BINARIES_DIR}/temp-bootfs
-    mkdir -p ${BINARIES_DIR}/temp-bootfs
+		# Extract the entire bundle, we need to do this for the block-hash-index files
+		rauc --keyring ${RAUC_KEYRING_PATH} --trust-environment extract ${OTA_BUNDLE_PATH} ${BUNDLE_WORKDIR}
+	fi
 
-    cat >> ${BINARIES_DIR}/temp-bootfs/manifest.raucm << EOF
-[update]
-compatible=satos-${BOARD_NAME}
-version=${VERSION}
-[bundle]
-format=verity
-[image.bootloader]
-filename=boot.vfat
-EOF
+	# First find out about the slots we have installed
+	awk "/\[slot/" ${TARGET_DIR}/etc/rauc/system.conf | while read slot_title; do
+		# Split after removing the brackets around [slot.0.rootfs]
+		IFS=. read -r _ slot_class slot_idx <<<${slot_title:1:-1}
 
-    ln -L ${BINARIES_DIR}/boot.vfat ${BINARIES_DIR}/temp-bootfs/
+		# Loop through everything thats in the ota bundle
+		for i in $(seq 0 ${RAUC_MF_IMAGES}); do
+			current_slot_class=RAUC_IMAGE_CLASS_${i}
 
-    # Generate rauc bundle for bootfs
-    ${HOST_DIR}/bin/rauc bundle ${RAUC_PKI_OPTIONS} ${BINARIES_DIR}/temp-bootfs/ ${BOOTFS_PATH}
+			# Search for a matching slot class entry
+			if [[ ${!current_slot_class} != ${slot_class} ]]; then
+				continue
+			fi
+
+			# Prepare the extraction of variables
+			digest=RAUC_IMAGE_DIGEST_${i}
+			size=RAUC_IMAGE_SIZE_${i}
+
+			# Add a newline between entries
+			if [ $i -gt 0 ]; then
+				echo -e "\n" >>${RAUC_STAGING_FOLDER}/status.db
+			fi
+
+			# Append the entry to the status file
+			cat >>${RAUC_STAGING_FOLDER}/status.db <<EOL
+${slot_title}
+bundle.compatible=${RAUC_MF_COMPATIBLE}
+bundle.version=${RAUC_MF_VERSION}
+status=ok
+sha256=${!digest}
+size=${!size}
+installed.timestamp=${INSTALL_TIME}
+installed.count=1
+EOL
+
+			# Check if we are in adaptive mode and if it contains block-hash-index
+			adaptive=RAUC_IMAGE_ADAPTIVE_${i}
+			if [ ! -z ${BUNDLE_WORKDIR:-} ] && [[ ${!adaptive:-} = *"block-hash-index"* ]]; then
+				# Create the target directory
+				block_hash_target_dir="${RAUC_STAGING_FOLDER}/slot.${slot_class}.${slot_idx}/hash-${!digest}"
+				mkdir -p ${block_hash_target_dir}
+
+				# Symlink the required files, they will get copied later
+				image_name=RAUC_IMAGE_NAME_$i
+				ln -Lf ${BUNDLE_WORKDIR}/${!image_name}.block-hash-index ${block_hash_target_dir}/block-hash-index
+			fi
+		done
+	done
+
+	# Bake in files to the image at /var/lib/rauc/ first-boot script copies them
+	for file in $(find ${RAUC_STAGING_FOLDER} -type f); do
+		install -m 644 -D ${file} ${ROOTPATH_TMP}/provisioning/rauc/${file#$RAUC_STAGING_FOLDER/}
+	done
 }
 
 function rauc_generate_ota_bundle {
-    # Generate a RAUC update bundle for the all filesystems
-    FULLFS_PATH=${BINARIES_DIR}/${RAUC_BUNDLE_BASE_FILENAME}-ota.raucb
-    [ -e ${FULLFS_PATH} ] && rm -rf ${FULLFS_PATH}
-    [ -e ${BINARIES_DIR}/temp-fullfs ] && rm -rf ${BINARIES_DIR}/temp-fullfs
-    mkdir -p ${BINARIES_DIR}/temp-fullfs
+	# Generate a RAUC update bundle for the all filesystems
+	FULLFS_PATH=${BINARIES_DIR}/${RAUC_BUNDLE_BASE_FILENAME}-ota.raucb
+	[ -e ${FULLFS_PATH} ] && rm -rf ${FULLFS_PATH}
+	[ -e ${BINARIES_DIR}/temp-fullfs ] && rm -rf ${BINARIES_DIR}/temp-fullfs
+	mkdir -p ${BINARIES_DIR}/temp-fullfs
 
-    cat >> ${BINARIES_DIR}/temp-fullfs/manifest.raucm << EOF
+	# Write manifest to file
+	MANIFEST_FILE=${BINARIES_DIR}/temp-fullfs/manifest.raucm
+	cat >${MANIFEST_FILE} <<EOL
 [update]
 compatible=satos-${BOARD_NAME}
-version=${VERSION}
+version=${RAUC_VERSION}
+
 [bundle]
 format=verity
+
 [image.bootloader]
 filename=boot.vfat
+
 [image.rootfs]
 filename=rootfs.img
 adaptive=block-hash-index
-EOF
+EOL
 
-    ln -L ${BINARIES_DIR}/boot.vfat ${BINARIES_DIR}/temp-fullfs/
-    # This has to end on .img for rauc to accept it
-    ln -L ${BINARIES_DIR}/rootfs.erofs ${BINARIES_DIR}/temp-fullfs/rootfs.img
+	# Check for the presence of a rootfs rauc hook
+	if [ -e ${BOARD_DIR}/rauc/hook ]; then
+		echo "Adding hook to rootfs bundle section"
+		cat >>${MANIFEST_FILE} <<EOL
+hooks=pre-install;post-install
 
-    # Generate rauc bundle for the ota
-    ${HOST_DIR}/bin/rauc bundle ${RAUC_PKI_OPTIONS} ${BINARIES_DIR}/temp-fullfs/ ${FULLFS_PATH}
+[hooks]
+filename=hook
+EOL
+		ln -L ${BOARD_DIR}/rauc/hook ${BINARIES_DIR}/temp-fullfs/hook
+	fi
 
-    # Symlink latest ota for board
-    ln -L ${FULLFS_PATH} ${BINARIES_DIR}/satos-${BOARD_NAME}-latest-ota.raucb
+	ln -L ${BINARIES_DIR}/boot.vfat ${BINARIES_DIR}/temp-fullfs/
+	# This has to end on .img for rauc to accept it
+	ln -L ${BINARIES_DIR}/rootfs.erofs ${BINARIES_DIR}/temp-fullfs/rootfs.img
+
+	# Generate rauc bundle for the ota
+	${HOST_DIR}/bin/rauc bundle ${RAUC_PKI_OPTIONS} ${BINARIES_DIR}/temp-fullfs/ ${FULLFS_PATH}
+
+	# Symlink latest ota for board
+	ln -Lf ${FULLFS_PATH} ${BINARIES_DIR}/${RAUC_BUNDLE_PREFIX}-latest-ota.raucb
 }
 
 function rauc_copy_keyring {
-    cp "${RAUC_CERT_NAME}" "${TARGET_DIR}/etc/rauc/keyring.pem"
+	install -m 644 $RAUC_KEYRING_PATH ${TARGET_DIR}/etc/rauc/keyring.pem
 }

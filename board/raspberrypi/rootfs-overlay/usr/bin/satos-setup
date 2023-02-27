@@ -15,27 +15,39 @@ change_permissions() {
   mode=$2
   user=${3:-}
   group=${4:-}
-  chmod_options=""
-  chmod $mode $file_path
+  chmod "$mode" "$file_path"
   if [ -n "$user" ] && [ -n "$group" ]; then
-    chown $user:$group $file_path
+    chown "$user":"$group" "$file_path"
   fi
 }
 
 # Required persistent directories
-dirs=(
-    "/data/chrony/" 
-    "/data/rauc/" 
-    "/data/config/apogee/"
-    "/data/config/system-connections/"
-    "/data/config/secrets/"
-    "/data/log/journal/"
-)
+dirs="
+/data/rauc/
+/data/chrony/
+/data/config/apogee/
+/data/config/system-connections/
+/data/config/secrets/
+/data/log/journal/
+"
 
-# Create all directories from the above list
-for dir in "${dirs[@]}"; do
+# Create all remaining directories, no action if they exist
+for dir in $dirs; do
   create_directory "$dir"
 done
+
+# Check if the rauc status file exists, and if not copy over the pre-baked files
+# This also comes in handy when the sd-card is flashed
+rauc_prov_status='/provisioning/rauc/status.db'
+rauc_target_status='/data/rauc/status.db'
+if [ -f ${rauc_prov_status} ] && { [ ! -f ${rauc_target_status} ] ||
+  [ -n "$(find ${rauc_prov_status} -newer ${rauc_target_status})" ]; }; then
+  echo "re-creating /data/rauc/ from pre-baked files..."
+
+  # Delete the rauc folder and copy baked data
+  rm -rf /data/rauc/
+  cp -a /provisioning/rauc/ /data/rauc/
+fi
 
 # Store the machine-id in the u-boot environment
 # This is required for consistent journaling and more
@@ -52,8 +64,8 @@ fi
 # Copy the time seed file from the fake_hwclock if:
 # 1) The file does not exist in /data
 # 2) The file does exist but has an older modification time
-if [ -f /etc/fake-hwclock.seed ] && ([ ! -f /data/fake-hwclock ] \
-    || [ /etc/fake-hwclock.seed -nt /data/fake-hwclock ]); then
+if [ -f /etc/fake-hwclock.seed ] && { [ ! -f /data/fake-hwclock ] ||
+  [ -n "$(find /etc/fake-hwclock.seed -newer /data/fake-hwclock)" ]; }; then
   # Add -p to preserve the time, as the system time might not be correct!
   cp -p /etc/fake-hwclock.seed /data/fake-hwclock
 fi
@@ -75,3 +87,6 @@ change_permissions /data/config/secrets/.hawkbit 0660 rauc-hawkbit rauc-hawkbit
 chown -R apogee:apogee /data/config/apogee/
 chmod -R 0770 /data/config/apogee/
 change_permissions /data/config/apogee/config.yml 0660 apogee apogee
+
+# We are done
+echo "setup completed"

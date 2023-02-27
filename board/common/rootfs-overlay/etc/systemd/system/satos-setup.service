@@ -1,9 +1,11 @@
 [Unit]
 Description=Set up the required permissions/folders for satos
-After=data.mount
+After=data.mount provisioning.mount
+Requires=data.mount
+Wants=provisioning.mount
 DefaultDependencies=no
 
 [Service]
 Type=oneshot
-ExecStart=/bin/satos-setup
+ExecStart=/usr/bin/satos-setup
 RemainAfterExit=yes

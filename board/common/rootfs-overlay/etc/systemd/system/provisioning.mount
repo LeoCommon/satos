@@ -1,0 +1,13 @@
+[Unit]
+Description=mount provisioning data if it exists
+DefaultDependencies=no
+
+[Mount]
+What=LABEL=provisioning
+Where=/provisioning
+Type=f2fs
+Options=nofail,defaults,noatime
+TimeoutSec=15
+
+[Install]
+WantedBy=local-fs.target

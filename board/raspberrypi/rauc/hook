@@ -1,0 +1,17 @@
+#!/bin/sh
+# This hook is always fired, if we need to do live modification on the usb stick or extra tasks, do them here.
+case "$1" in
+slot-post-install)
+        # only rootfs needs to be handled
+        test "$RAUC_SLOT_CLASS" = "rootfs" || exit 0
+        ;;
+slot-pre-install)
+        # only rootfs needs to be handled
+        test "$RAUC_SLOT_CLASS" = "rootfs" || exit 0
+        ;;
+*)
+        exit 1
+        ;;
+esac
+
+exit 0

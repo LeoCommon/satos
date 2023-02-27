@@ -9,8 +9,8 @@ kernel=u-boot.bin
 # How much memory in MB to assign to the GPU
 gpu_mem=16
 
-# fixes rpi (3B, 3B+, 3A+, 4B and Zero W) ttyAMA0 serial console
-dtoverlay=miniuart-bt
+# disable bluetooth, to get ttyAMA0 back
+dtoverlay=disable-bt
 
 # enable 64bits support
 arm_64bit=1

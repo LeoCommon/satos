@@ -20,7 +20,7 @@ dtb="output/images/bcm2710-rpi-3-b-plus.dtb"
 kernel="output/images/Image"
 # <MartB> 29.01.2023 U-Boot does not work in qemu
 # uboot="output/images/u-boot.bin"
-BR_IMAGE_PATH="release/satos_rpi3_64_sdcard.img"
+BR_IMAGE_PATH="release/sdcard.img"
 QEMU_IMAGE_PATH=$TMP_FOLDER/satos_qemu_rpi3b.img
 QEMU_USB_PATH=$TMP_FOLDER/usb-stick.img
 # This corresponds to the identifier and partition e.g mmcblk0pX

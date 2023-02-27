@@ -1,6 +1,6 @@
 #!/bin/bash
 sdcard="/dev/mmcblk0"
-image="./release/satos_rpi4_64_sdcard.img"
+image="./release/sdcard.img"
 datapartition="$sdcard""p4"
 mountpoint="/media/$USER/data"
 sourcefolder="./board/common/rootfs-overlay/data/."
