@@ -11,6 +11,7 @@ CONFIG_SYS_REDUNDAND_ENVIRONMENT=y
 # CONFIG_VIDEO is not set
 # Add EROFS support
 CONFIG_FS_EROFS=y
-
+# Add ZSTD kernel loading support
+CONFIG_ZSTD=y
 # Disable the bootdelay
 CONFIG_BOOTDELAY=0
