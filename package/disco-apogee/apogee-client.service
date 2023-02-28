@@ -9,7 +9,8 @@ StartLimitBurst=3
 [Service]
 User=apogee
 Group=apogee
-RuntimeDirectoryMode=0660
+RuntimeDirectory=apogee
+RuntimeDirectoryMode=0750
 AmbientCapabilities=CAP_SYS_BOOT
 NotifyAccess=exec
 ProtectSystem=full
