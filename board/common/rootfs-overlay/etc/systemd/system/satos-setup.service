@@ -4,6 +4,7 @@ After=data.mount provisioning.mount
 Requires=data.mount
 Wants=provisioning.mount
 DefaultDependencies=no
+OnFailure=satos-emergency.service
 
 [Service]
 Type=oneshot
