@@ -14,6 +14,7 @@ RuntimeDirectoryMode=0750
 AmbientCapabilities=CAP_SYS_BOOT
 NotifyAccess=exec
 ProtectSystem=full
+ReadWritePaths=/run/apogee /data/jobs/
 Type=simple
 ExecStart=/usr/bin/apogee-client
 Restart=always
