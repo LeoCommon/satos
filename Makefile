@@ -32,6 +32,9 @@ qemu:
 qemu-dev:
 	./qemu/run_qemu_rpi3.sh -k
 
+vscode:
+	./scripts/development/prepare-vscode.sh
+
 $(RELEASE_DIR):
 	mkdir -p $(RELEASE_DIR)
 
