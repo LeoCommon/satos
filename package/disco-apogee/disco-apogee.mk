@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DISCO_APOGEE_VERSION = 0.2
+DISCO_APOGEE_VERSION = 0.3
 DISCO_APOGEE_SITE = $(BR2_EXTERNAL_SATOS_PATH)/src/apogee
 DISCO_APOGEE_SITE_METHOD = local
 DISCO_APOGEE_SITE_LICENSE = Proprietary
@@ -17,8 +17,9 @@ DISCO_APOGEE_GOMOD = "disco.cs.uni-kl.de/apogee"
 
 # Create the required user
 # This also adds the apogee user to the plugdev group so we can use the hackrf
+# Furthermore the systemd-journal group is required to access the journal
 define DISCO_APOGEE_USERS
-	apogee -1 apogee -1 * - - plugdev Apogee daemon user
+	apogee -1 apogee -1 * - - plugdev,systemd-journal Apogee daemon user
 endef
 
 # Install the systemd-service and the required policy kit rules
