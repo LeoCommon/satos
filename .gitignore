@@ -17,4 +17,5 @@ release
 ota/*.pem
 qemu/tmp
 qemu/config_usb/*
-!qemu/config_usb/.gitkeep 
+!qemu/config_usb/.gitkeep
+/configs/*_defconfig

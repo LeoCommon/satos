@@ -5,12 +5,13 @@ BUILDROOT = $(BUILDDIR)/buildroot
 BUILDROOT_EXTERNAL = $(BUILDDIR)
 RELEASE_DIR = $(BUILDDIR)/release
 DEFCONFIG_DIR = $(BUILDROOT_EXTERNAL)/configs
+TARGET_CONFIG_DIR = $(DEFCONFIG_DIR)/targets/
 VERSION_DATE := $(shell date --utc +'%Y%m%d')
 VERSION := "$(DEPLOYMENT_MODE)-$(VERSION_DATE)-$(shell git rev-parse --short HEAD)"
 
-
-TARGETS := $(notdir $(patsubst %_defconfig,%,$(wildcard $(DEFCONFIG_DIR)/*_defconfig)))
-TARGETS_CONFIG := $(notdir $(patsubst %_defconfig,%-config,$(wildcard $(DEFCONFIG_DIR)/*_defconfig)))
+# Generate the targets 
+TARGETS := $(notdir $(patsubst %.config,%,$(wildcard $(TARGET_CONFIG_DIR)/*.config)))
+TARGETS_CONFIG := $(notdir $(patsubst %.config,%-generate,$(wildcard $(TARGET_CONFIG_DIR)/*.config)))
 
 # Set O variable if not already done on the command line
 ifneq ("$(origin O)", "command line")
@@ -38,11 +39,14 @@ vscode:
 $(RELEASE_DIR):
 	mkdir -p $(RELEASE_DIR)
 
-$(TARGETS_CONFIG): %-config:
-	@echo "config $*"
+# Generate the required defconfig files and pass them to buildroot
+$(TARGETS_CONFIG): %-generate:
+	@echo "generating config: configs/targets/$*.config"
+	python3 scripts/make_defconfig.py -g configs/targets/$*.config -o configs/$*_defconfig
+	@echo "building with config $*_defconfig"
 	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) "$*_defconfig"
 
-$(TARGETS): %: $(RELEASE_DIR) %-config
+$(TARGETS): %: $(RELEASE_DIR) %-generate
 	@echo "build $@"
 	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) VERSION=$(VERSION)
 	mv -f $(O)/images/*.raucb $(RELEASE_DIR)/
