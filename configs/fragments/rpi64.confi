@@ -16,7 +16,7 @@ BR2_ROOTFS_POST_IMAGE_SCRIPT="$(BR2_EXTERNAL_SATOS_PATH)/board/raspberrypi/post-
 
 # Erofs settings
 BR2_TARGET_ROOTFS_EROFS=y
-BR2_TARGET_ROOTFS_EROFS_DEDUP_BLOCKS=y
+# dont use compression, nor custom pclustersize here, it has no benefits.
 
 # Custom u-boot version
 BR2_TARGET_UBOOT_CUSTOM_VERSION=y
