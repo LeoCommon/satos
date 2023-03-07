@@ -1,10 +1,10 @@
 ################################################################################
 #
-# disco-apogee
+# apogee
 #
 ################################################################################
 
-APOGEE_VERSION = 0.3
+APOGEE_VERSION = 1.1
 APOGEE_SITE = $(BR2_EXTERNAL_SATOS_PATH)/src/apogee
 APOGEE_SITE_METHOD = local
 APOGEE_SITE_LICENSE = Proprietary
