@@ -63,6 +63,7 @@ endif
 
 clean:
 	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) clean
+	rm -rf configs/*_defconfig
 
 help:
 	@echo "Supported targets: $(TARGETS)"
