@@ -94,7 +94,7 @@ change_permissions /data/config/secrets/.hawkbit 0660 rauc-hawkbit rauc-hawkbit
 # Secure the apogee files
 chown -R apogee:apogee /data/config/apogee/
 chmod -R 0750 /data/config/apogee/
-change_permissions /data/config/apogee/config.yml 0660 apogee apogee
+change_permissions /data/config/apogee/config.toml 0660 apogee apogee
 # Job folder permission
 chown -R apogee:apogee /data/jobs/
 chmod -R 0750 /data/jobs/
