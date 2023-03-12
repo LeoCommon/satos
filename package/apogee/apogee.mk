@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-APOGEE_VERSION = 1.1
+APOGEE_VERSION = 0.2
 APOGEE_SITE = $(BR2_EXTERNAL_SATOS_PATH)/src/apogee
 APOGEE_SITE_METHOD = local
-APOGEE_SITE_LICENSE = Proprietary
 APOGEE_BUILD_TARGETS = cmd/modem_manager cmd/client
 APOGEE_INSTALL_BINS = modem_manager client
+APOGEE_LICENSE = GPL-3.0+
+APOGEE_LICENSE_FILES = COPYING
 
 # Make sure this matches our go.mod file
 # Required because auto-discovery is using URLs within buildroot
