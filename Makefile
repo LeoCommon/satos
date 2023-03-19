@@ -22,7 +22,7 @@ endif
 
 .NOTPARALLEL: $(TARGETS) $(TARGETS_CONFIG) all
 
-.PHONY: $(TARGETS) $(TARGETS_CONFIG) all qemu qemu-dev clean help
+.PHONY: $(TARGETS) $(TARGETS_CONFIG) all qemu qemu-dev clean legal apogee help
 
 all: $(TARGETS)
 
@@ -54,9 +54,6 @@ $(TARGETS): %: $(RELEASE_DIR) %-generate
 	# Create a slightly compressed version of sdcard.img
 	zstd -T0 -f $(RELEASE_DIR)/sdcard.img
 
-	# Create legal-info
-	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) legal-info
-
 	# Do not clean when building for one target
 ifneq ($(words $(filter $(TARGETS),$(MAKECMDGOALS))), 1)
 	@echo "clean $@"
@@ -67,6 +64,14 @@ endif
 clean:
 	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) clean
 	rm -rf configs/*_defconfig
+
+legal:
+	# Create legal-info
+	rm -rf output/legal-info/
+	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) legal-info
+
+apogee:
+	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) apogee-dirclean apogee
 
 help:
 	@echo "Supported targets: $(TARGETS)"

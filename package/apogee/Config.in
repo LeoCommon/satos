@@ -1,7 +1,9 @@
 config BR2_PACKAGE_APOGEE
 	bool "apogee"
 	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_HOST_GO
+	select BR2_PACKAGE_LIBUSB
 	help
 	  System and task management daemons for satos
 

@@ -11,7 +11,7 @@ APOGEE_BUILD_TARGETS = cmd/modem_manager cmd/client
 APOGEE_INSTALL_BINS = modem_manager client
 APOGEE_LICENSE = GPL-3.0+
 APOGEE_LICENSE_FILES = COPYING
-
+APOGEE_DEPENDENCIES=libusb
 # Make sure this matches our go.mod file
 # Required because auto-discovery is using URLs within buildroot
 APOGEE_GOMOD = "disco.cs.uni-kl.de/apogee"
