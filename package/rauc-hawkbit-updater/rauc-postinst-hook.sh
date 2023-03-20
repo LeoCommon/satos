@@ -4,7 +4,7 @@
 # This is needed for the update to be marked succesful.
 reboot() {
     echo "rebooting in 10 seconds now!"
-    systemd-run -q sh -c 'sleep 10 && reboot'
+    systemd-run --on-active=10s systemctl reboot
 }
 
 # Send SIGUSR1 signal to the process to signal a finished update
