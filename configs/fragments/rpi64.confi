@@ -3,7 +3,7 @@ BR2_aarch64=y
 # Custom linux kernel
 BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(BR2_EXTERNAL_SATOS_PATH)/board/raspberrypi/linux.fragment"
 BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
-BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="$(call github,raspberrypi,linux,d1292885062c08dbc9ffe89d52819ec360bc9fec)/linux-d1292885062c08dbc9ffe89d52819ec360bc9fec.tar.gz"
+BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="$(call github,raspberrypi,linux,0ac970bd2668fe68da8a24b73e74ee5d2b64cf89)/linux-0ac970bd2668fe68da8a24b73e74ee5d2b64cf89.tar.gz"
 
 # Add the firmware, include wifi by default
 BR2_PACKAGE_RPI_FIRMWARE=y
