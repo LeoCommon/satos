@@ -43,6 +43,10 @@ for dir in $dirs; do
   create_directory "$dir"
 done
 
+# "scrub" the /data/ directory permissions to sane defaults
+chown -R root:root /data/
+chmod -R 0755 /data/
+
 # Check if the rauc status file exists, and if not copy over the pre-baked files
 # This also comes in handy when the sd-card is flashed
 rauc_prov_status='/provisioning/rauc/status.db'
