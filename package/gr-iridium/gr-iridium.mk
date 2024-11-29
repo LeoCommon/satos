@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GR_IRIDIUM_VERSION = 0c9defb657895c4b131ff6d6ecf7dd54b200ef6e
+GR_IRIDIUM_VERSION = eed634ca388394fcfd2531187aa77537372519db
 GR_IRIDIUM_SITE = $(call github,muccc,gr-iridium,$(GR_IRIDIUM_VERSION))
 
 GR_IRIDIUM_LICENSE = GPL-3.0+
