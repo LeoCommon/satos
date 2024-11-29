@@ -40,7 +40,9 @@ function rauc_generate_status_file_from_ota {
 	if compgen -A variable | grep -q RAUC_IMAGE_ADAPTIVE_; then
 		echo "At least one image is adaptive, executing extra logic"
 		BUNDLE_WORKDIR=${BINARIES_DIR}/temp-bundle
-		mkdir -p "${BUNDLE_WORKDIR}"
+
+		# Delete directory in case it was not deleted before
+		[[ -n ${BUNDLE_WORKDIR:-} ]] && rm -rf "${BUNDLE_WORKDIR}"
 
 		# Extract the entire bundle, we need to do this for the block-hash-index files
 		rauc --keyring "${RAUC_KEYRING_PATH}" --trust-environment extract "${OTA_BUNDLE_PATH}" "${BUNDLE_WORKDIR}"
