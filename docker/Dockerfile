@@ -22,9 +22,9 @@ ARG UBOOT_DEPS="libgnutls28-dev uuid-dev libssl-dev"
 
 # Install buildroot essentials https://buildroot.org/downloads/manual/manual.html
 RUN apt update && apt install -y --no-install-recommends ${UBOOT_DEPS} ca-certificates \
-    locales build-essential which sed make wget cmake binutils diffutils bash patch gzip \
+    locales build-essential which sed make wget binutils diffutils bash patch gzip \
     bzip2 perl tar cpio unzip zstd rsync file bc findutils python3 libncurses-dev curl  \
-    cvs git subversion gosu sudo ${DOCUMENTATION_DEPS}
+    cvs git subversion gosu sudo ${DOCUMENTATION_DEPS} openssh-client
 
 # Update locale
 RUN localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8 
