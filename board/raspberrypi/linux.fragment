@@ -35,6 +35,9 @@ CONFIG_OVERLAY_FS=m
 # Include the broadcom rpi WiFi driver module
 CONFIG_BRCMFMAC=m
 
+# Use 4k Pages
+CONFIG_ARM64_4K_PAGES=y
+
 # Disable armv7 aka 32bit compat mode
 # CONFIG_COMPAT is not set
 
