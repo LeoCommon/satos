@@ -3,7 +3,7 @@
 # satos-genconf
 #
 ################################################################################
-SATOS_GENCONF_VERSION = 1.0
+SATOS_GENCONF_VERSION = 1.1
 SATOS_GENCONF_SITE = $(BR2_EXTERNAL_SATOS_PATH)/src/satos_genconf
 SATOS_GENCONF_SITE_METHOD = local
 SATOS_GENCONF_LICENSE = Proprietary
