@@ -23,7 +23,7 @@ def process_file(file, output_filename=''):
 
     # Check if a primary package mirror is defined and exclusively use it
     pkg_mirror = os.environ.get("SATOS_PKG_MIRROR")
-    if pkg_mirror != "":
+    if pkg_mirror:
         output += "# Inject mirror as defined in environment and use it for builds\n"
         output += f"BR2_PRIMARY_SITE=\"{pkg_mirror}\"\nBR2_PRIMARY_SITE_ONLY=y\n"
     
