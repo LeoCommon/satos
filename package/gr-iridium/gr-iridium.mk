@@ -11,10 +11,6 @@ GR_IRIDIUM_LICENSE = GPL-3.0+
 
 # Theres no real license file, but we include the readme for now <MartB>
 GR_IRIDIUM_LICENSE_FILES = README.md
-
-# gr-iridium prevents doing an in-source-tree build
-GR_OSMOSDR_SUPPORTS_IN_SOURCE_BUILD = NO
-
 GR_IRIDIUM_DEPENDENCIES = gnuradio host-python3 volk
 
 GR_IRIDIUM_CONF_OPTS = \
@@ -24,6 +20,11 @@ GR_IRIDIUM_CONF_OPTS = \
 # For third-party blocks, the gr-iridium libraries are mandatory at
 # compile time.
 GR_IRIDIUM_INSTALL_STAGING = YES
+
+# Fix wrong library suffix
+GR_IRIDIUM_CONF_ENV += \
+	_PYTHON_SYSCONFIGDATA_NAME=$(PKG_PYTHON_SYSCONFIGDATA_NAME) \
+	PYTHONPATH=$(PYTHON3_PATH)
 
 ifeq ($(BR2_PACKAGE_GR_IRIDIUM_PYTHON),y)
 GR_IRIDIUM_CONF_OPTS += -DENABLE_PYTHON=ON
