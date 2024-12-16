@@ -1,0 +1,16 @@
+config BR2_PACKAGE_SOAPYSDR_UHD
+	bool "soapysdr-uhd"
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_PACKAGE_SOAPYSDR
+	depends on BR2_PACKAGE_UHD
+	select BR2_PACKAGE_BOOST_THREAD
+	select BR2_PACKAGE_BOOST_SYSTEM
+	help
+	  Soapy SDR plugins for UHD supported SDR devices
+
+	  https://github.com/pothosware/SoapyUHD
+
+comment "soapysdr-uhd needs a toolchain w/ threads, dynamic library, gcc >= 4.9"
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_9

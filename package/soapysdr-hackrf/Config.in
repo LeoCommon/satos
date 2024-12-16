@@ -1,0 +1,16 @@
+config BR2_PACKAGE_SOAPYSDR_HACKRF
+	bool "soapysdr-hackrf"
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_PACKAGE_SOAPYSDR
+	depends on BR2_PACKAGE_HACKRF
+	select BR2_PACKAGE_BOOST_THREAD
+	select BR2_PACKAGE_BOOST_SYSTEM
+	help
+	  Soapy SDR plugins for HACKRF supported SDR devices
+
+	  https://github.com/pothosware/SoapyHackRF
+
+comment "soapysdr-hackrf needs a toolchain w/ threads, dynamic library, gcc >= 4.9"
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
