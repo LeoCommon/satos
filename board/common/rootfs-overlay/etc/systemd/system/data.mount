@@ -3,7 +3,9 @@ Description = required data usb stick
 DefaultDependencies=no
 Conflicts=umount.target
 Before=local-fs.target umount.target
-OnFailure=satos-emergency.service
+StartLimitIntervalSec=10
+StartLimitBurst=3
+StartLimitAction=reboot
 
 [Mount]
 What=LABEL=discosat-data
