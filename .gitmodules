@@ -7,3 +7,6 @@
 [submodule "src/satos_genconf"]
 	path = src/satos_genconf
 	url = ../satos_genconf.git
+[submodule "src/satiq-ira"]
+	path = src/satiq-ira
+	url = ../satiq-ira.git

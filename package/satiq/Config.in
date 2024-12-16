@@ -1,0 +1,9 @@
+config BR2_PACKAGE_SATIQ
+	bool "satiq"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_CRCMOD
+	select BR2_PACKAGE_PYTHON_NUMPY
+	select BR2_PACKAGE_PYTHON_PYZMQ
+	help
+	  Data collection code from the SATIQ System, modified for portability.
+
