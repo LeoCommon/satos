@@ -1,5 +1,5 @@
 # SATOS
-This is the external Buildroot tree of SATOS an operating system for satellite (primarily iridium) sniffing. https://buildroot.org/downloads/manual/manual.html
+This is the external Buildroot tree of SATOS the Satellite data Acquisition Tool Operating System. https://buildroot.org/downloads/manual/manual.html
 
 It is inspired by following excellent projects:
 - https://github.com/cdsteinkuehler/br2rauc
@@ -30,9 +30,9 @@ openssl req \
 
 
 ### Building using the supplied Makefile
-To build the image for a raspberry pi 3 in 64 bit mode use:
+To build the image for a raspberry pi 5 in 64 bit mode use:
 ```
-make rpi3-64
+make rpi5-64
 ```
 
 To list all available targets, run `make help`.
@@ -47,9 +47,7 @@ Config adjustments can be made by first invoking the make command for the specif
 ## Installation
 The resulting image can be installed onto a SD-Card using the following commands
 ```
-sudo dd if=release/sdcard.img of=/dev/mmcblk0 bs=4M
+// (substitute X with your SD Card mount point, usually thats 0)
+sudo dd if=release/sdcard.img of=/dev/mmcblkX bs=4M
 sync
 ```
-
-## Contact
-In case of issues or questions contact [Martin Böh](mailto:contact@martb.dev)

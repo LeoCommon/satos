@@ -32,7 +32,7 @@ dirs="
 /data/rauc/
 /data/chrony/
 /data/jobs/
-/data/config/apogee/
+/data/config/client/
 /data/config/system-connections/
 /data/config/secrets/
 /data/log/journal/
@@ -95,12 +95,13 @@ chmod -R 0600 /data/config/system-connections/
 # Protect the hawkbit secrets
 change_permissions /data/config/secrets/.hawkbit 0660 rauc-hawkbit rauc-hawkbit
 
-# Secure the apogee files
-chown -R apogee:apogee /data/config/apogee/
-chmod -R 0750 /data/config/apogee/
-change_permissions /data/config/apogee/config.toml 0660 apogee apogee
+# Secure the client files
+chown -R client:client /data/config/client/
+chmod -R 0750 /data/config/client/
+change_permissions /data/config/client/config.toml 0660 client client
+
 # Job folder permission
-chown -R apogee:apogee /data/jobs/
+chown -R client:client /data/jobs/
 chmod -R 0750 /data/jobs/
 
 # We are done

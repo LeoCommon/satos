@@ -1,9 +1,9 @@
 [submodule "buildroot"]
 	path = buildroot
 	url = ../buildroot.git
-[submodule "apogee"]
-	path = src/apogee
-	url = ../apogee.git
+[submodule "client"]
+	path = src/client
+	url = ../client.git
 [submodule "src/satos_genconf"]
 	path = src/satos_genconf
 	url = ../satos_genconf.git

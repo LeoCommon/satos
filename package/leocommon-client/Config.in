@@ -1,5 +1,5 @@
-config BR2_PACKAGE_APOGEE
-	bool "apogee"
+config BR2_PACKAGE_LEOCOMMON_CLIENT
+	bool "leocommonclient"
 	depends on BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_HOST_GO
@@ -7,4 +7,4 @@ config BR2_PACKAGE_APOGEE
 	help
 	  System and task management daemons for satos
 
-	  https://git.cs.uni-kl.de/discosat/apogee
+	  https://github.com/leocommon/client

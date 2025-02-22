@@ -22,7 +22,7 @@ endif
 
 .NOTPARALLEL: $(TARGETS) $(TARGETS_CONFIG) all
 
-.PHONY: $(TARGETS) $(TARGETS_CONFIG) all qemu qemu-dev clean legal apogee help
+.PHONY: $(TARGETS) $(TARGETS_CONFIG) all qemu qemu-dev clean legal client help
 
 all: $(TARGETS)
 
@@ -50,9 +50,9 @@ $(TARGETS): %: $(RELEASE_DIR) %-generate
 	@echo "build $@"
 	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) VERSION=$(VERSION)
 	mv -f $(O)/images/*.raucb $(RELEASE_DIR)/
-	mv -f $(O)/images/sdcard.img $(RELEASE_DIR)/
-	# Create a slightly compressed version of sdcard.img
-	zstd -T0 -f $(RELEASE_DIR)/sdcard.img
+	mv -f $(O)/images/*.img $(RELEASE_DIR)/
+	# Create a slightly compressed version of all .img files
+	zstd -T0 -f $(RELEASE_DIR)/*.img
 
 	# Do not clean when building for one target
 ifneq ($(words $(filter $(TARGETS),$(MAKECMDGOALS))), 1)
@@ -70,8 +70,8 @@ legal:
 	rm -rf output/legal-info/
 	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) legal-info
 
-apogee:
-	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) apogee-dirclean apogee
+client:
+	$(MAKE) -C $(BUILDROOT) O=$(O) BR2_EXTERNAL=$(BUILDROOT_EXTERNAL) leocommon-client-dirclean leocommon-client
 
 help:
 	@echo "Supported targets: $(TARGETS)"
