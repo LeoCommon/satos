@@ -8,4 +8,4 @@ config BR2_PACKAGE_RAUC_HAWKBIT_UPDATER
 	  It is a port of the RAUC hawkBit Client written in Python. 
 	  The daemon runs on your target and operates as an interface between the RAUC D-Bus API and the hawkBit DDI API.
 
-	  https://git.cs.uni-kl.de/discosat/rauc-hawkbit
+	  https://github.com/rauc/rauc-hawkbit-updater

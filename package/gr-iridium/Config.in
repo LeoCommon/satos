@@ -8,7 +8,7 @@ config BR2_PACKAGE_GR_IRIDIUM
 	help
 	  Module providing blocks to build an Iridium burst detector and demodulator.
 
-	  https://git.cs.uni-kl.de/discosat/gr_iridium
+	  https://github.com/muccc/gr-iridium
 
 if BR2_PACKAGE_GR_IRIDIUM
 

@@ -6,4 +6,4 @@ config BR2_PACKAGE_SATOS_GENCONF
 	help
 	  Tool for automatically generating config files for certain services like the rauc-hawkbit updater.
 
-	  https://git.cs.uni-kl.de/discosat/satos_genconf
+	  https://github.com/LeoCommon/satos_genconf
