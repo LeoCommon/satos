@@ -1,4 +1,8 @@
-DEVICES="/dev/ttyUSB1"
+# Do not use any devices by default, daemon should be started with valid devices only
+DEVICES=""
 
 # Dont wait for clients to connect
 GPSD_OPTIONS="-n"
+
+# Add new usb devices to the daemon automatically
+USBAUTO="true"
