@@ -8,7 +8,7 @@ StartLimitBurst=3
 StartLimitAction=reboot
 
 [Mount]
-What=LABEL=discosat-data
+What=LABEL=leocommon-data
 Where=/data
 Type=ext4
 Options=defaults,noatime
