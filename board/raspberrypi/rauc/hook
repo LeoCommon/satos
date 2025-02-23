@@ -4,6 +4,24 @@ case "$1" in
 slot-post-install)
         # only rootfs needs to be handled
         test "$RAUC_SLOT_CLASS" = "rootfs" || exit 0
+
+        """
+        <MartB>: 23.02.2025
+        The following migrations should be removed once all sensors are migrated to the new version.
+        """
+        # Migrate apogee data folder if it exists
+        if [ -d /data/config/apogee ]; then
+            # Move without creating "apogee" in target directory
+            echo "migration: moving data folder from apogee to client."
+            mv -T /data/config/apogee /data/config/client
+        fi
+
+        # Check if tune2fs is installed if yes, check if we can relabel the data stick
+        RELABEL_DISCOSAT=(tune2fs -L leocommon-data LABEL=discosat-data)
+        if [ -x "$(command -v tune2fs)" ] && ${RELABEL_DISCOSAT[@]} >/dev/null 2>&1; then
+            echo 'migration: relabeled discosat-data stick to leocommon-data.'
+            # to revert it, run tune2fs -L discosat-data LABEL=leocommon-data
+        fi
         ;;
 slot-pre-install)
         # only rootfs needs to be handled
