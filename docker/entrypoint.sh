@@ -17,7 +17,7 @@ fi
 
 export HOME=/home/$BUILD_USER
 addgroup --quiet --gid $NEW_GID $BUILD_USER
-adduser --quiet --shell /bin/bash -uid $NEW_UID --gid $NEW_GID --home $HOME --disabled-password -gecos "" $BUILD_USER 
+adduser --quiet --shell /bin/bash -uid $NEW_UID --gid $NEW_GID --home $HOME --disabled-password -gecos "" $BUILD_USER
 adduser --quiet $BUILD_USER sudo
 
 echo "info: fixing user permissions for home directory"
