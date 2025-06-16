@@ -66,7 +66,8 @@ To list all available build targets, run `make help`
 To build the image for a Raspberry Pi 5 in 64 bit mode use
 
 ```
-make rpi5_64
+// Run in parallel with all available cores, limit usage using -j NUMBER
+make rpi5_64 -j$(nproc)
 ```
 
 This will provide you with `release/sdcard.img` the image you can flash on the sdcard of your target device and `release/satos-rpi5-64-latest-ota.raucb` which contains OTA update bundles.
