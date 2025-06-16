@@ -1,7 +1,7 @@
 # Copyright (C) 2024-2025 LeoCommon maintainers and contributors
 
 ARG ARCH=
-FROM ${ARCH}debian:12
+FROM ${ARCH}debian:stable-slim
 
 LABEL authors="LeoCommon Maintainers <contact@martb.dev>" \
       org.opencontainers.image.authors="LeoCommon Maintainers <contact@martb.dev>" \
@@ -12,7 +12,7 @@ LABEL authors="LeoCommon Maintainers <contact@martb.dev>" \
       org.opencontainers.image.licenses="GNU" \
       org.opencontainers.image.title="satos-build" \
       org.opencontainers.image.description="Container to build SatOS Images" \
-      org.opencontainers.image.base.name="docker.io/debian:12"
+      org.opencontainers.image.base.name="docker.io/debian:stable-slim"
 
 # Add documentation, graphing and stats tools
 ARG DOCUMENTATION_DEPS="asciidoc graphviz python3-matplotlib python3-aiohttp"
