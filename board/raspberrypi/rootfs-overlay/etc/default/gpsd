@@ -1,3 +1,6 @@
+# Run gpsd as daemon
+START_DAEMON="true"
+
 # Do not use any devices by default, daemon should be started with valid devices only
 DEVICES=""
 
