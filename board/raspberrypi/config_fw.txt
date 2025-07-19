@@ -1,7 +1,3 @@
-# Firmware bootloader files
-start_file=start4cd.elf
-fixup_file=fixup4cd.dat
-
 # Boot u-boot first so we can run a/b slot
 disable_splash=1
 kernel=u-boot.bin
@@ -17,3 +13,12 @@ arm_64bit=1
 
 # enable the watchdog
 dtparam=watchdog
+
+[pi4]
+# Enable cpu boost to 1.8Ghz on later models
+arm_boost=1
+
+[pi5]
+# We dont use the new UART connector, so enable the old way
+enable_uart=1
+dtparam=uart0_console
