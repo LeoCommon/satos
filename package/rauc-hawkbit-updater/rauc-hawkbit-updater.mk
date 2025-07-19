@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RAUC_HAWKBIT_UPDATER_VERSION = 767a8f8c4dcea8a31385de34d9c03871eaea25cf
+RAUC_HAWKBIT_UPDATER_VERSION = 2711c0e02781eb9d97285c87197f1bafef75d0d1
 RAUC_HAWKBIT_UPDATER_LICENSE = LGPL-2.1 license
 RAUC_HAWKBIT_UPDATER_LICENSE_FILES = README.md LICENSE
 RAUC_HAWKBIT_UPDATER_SITE = $(call github,rauc,rauc-hawkbit-updater,$(RAUC_HAWKBIT_UPDATER_VERSION))
