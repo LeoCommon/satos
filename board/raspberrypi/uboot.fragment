@@ -13,4 +13,4 @@ CONFIG_FS_EROFS=y
 # Add ZSTD kernel loading support
 CONFIG_ZSTD=y
 # Disable the bootdelay
-CONFIG_BOOTDELAY=0
+CONFIG_BOOTDELAY=3
