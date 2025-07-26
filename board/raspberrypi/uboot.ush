@@ -2,10 +2,11 @@ test -n "${BOOT_ORDER}" || setenv BOOT_ORDER "A B"
 test -n "${BOOT_A_LEFT}" || setenv BOOT_A_LEFT 3
 test -n "${BOOT_B_LEFT}" || setenv BOOT_B_LEFT 3
 test -n "${MACHINE_ID}" || setenv MACHINE_ID "uninitialized"
+test -n "${MACHINE_ID}" || setenv BOOT_CONDITION "systemd.condition-first-boot=true"
 
-setenv bootargs_satos rootwait console=tty1 console=ttyAMA0,115200 fsck.repair=yes panic=2 systemd.machine_id=${MACHINE_ID}
-setenv bootargs_a "root=/dev/mmcblk0p2 rootfstype=erofs ro"
-setenv bootargs_b "root=/dev/mmcblk0p3 rootfstype=erofs ro"
+setenv bootargs_satos "keep_bootcon rootwait console=ttyAMA0,115200 fsck.repair=yes panic=2 systemd.machine_id=${MACHINE_ID} ${BOOT_CONDITION}"
+setenv bootargs_a "root=/dev/mmcblk${devnum}p2 rootfstype=erofs ro"
+setenv bootargs_b "root=/dev/mmcblk${devnum}p3 rootfstype=erofs ro"
 
 # Preserve origin bootargs
 setenv bootargs_rpi
@@ -36,7 +37,10 @@ for BOOT_SLOT in "${BOOT_ORDER}"; do
   fi
 done
 
+# Reset things we dont want to save
 setenv fdt_addr
+setenv BOOT_CONDITION
+
 if test -n "${bootargs}"; then
   saveenv
 else

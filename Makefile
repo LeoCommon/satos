@@ -27,11 +27,11 @@ endif
 all: $(TARGETS)
 
 qemu:
-	$(MAKE) rpi3_64
-	./qemu/run_qemu_rpi3.sh
+	export QEMU_BUILD=1
+	$(MAKE) rpi4_64
 
 qemu-dev:
-	./qemu/run_qemu_rpi3.sh -k
+	./qemu/run_qemu_rpi4.sh
 
 vscode:
 	./scripts/development/prepare-vscode.sh
