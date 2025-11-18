@@ -1,0 +1,5 @@
+config BR2_PACKAGE_LIBAD9361
+	bool "libad9361"
+	depends on BR2_PACKAGE_LIBIIO
+	help
+	  https://github.com/analogdevicesinc/libad9361-iio/

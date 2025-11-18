@@ -1,0 +1,8 @@
+config BR2_PACKAGE_UHD_FIRMWARE
+	bool "uhd-firmware"
+	depends on BR2_PACKAGE_UHD
+	help
+	  Firmware images for Universal Software Radio Peripheral (USRP)
+	  Hardware Driver devices.
+	  
+	  https://github.com/EttusResearch/uhd
