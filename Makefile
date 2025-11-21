@@ -28,7 +28,7 @@ all: $(TARGETS)
 
 qemu:
 	export QEMU_BUILD=1
-	$(MAKE) rpi4_64
+	$(MAKE) rpi64
 
 qemu-dev:
 	./qemu/run_qemu_rpi4.sh

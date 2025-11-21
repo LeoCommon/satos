@@ -1,15 +1,18 @@
-# Boot u-boot first so we can run a/b slot
-disable_splash=1
-kernel=u-boot.bin
+[all]
+arm_64bit=1
 
-# How much memory in MB to assign to the GPU
-gpu_mem=16
+# Enable uart for debugging
+enable_uart=1
+uart_2ndstage=1
 
 # disable bluetooth, to get ttyAMA0 back
 dtoverlay=disable-bt
 
-# enable 64bits support
-arm_64bit=1
+# Disable splash screen
+disable_splash=1
+
+# How much memory in MB to assign to the GPU
+gpu_mem=16
 
 # enable the watchdog
 dtparam=watchdog
@@ -20,5 +23,8 @@ arm_boost=1
 
 [pi5]
 # We dont use the new UART connector, so enable the old way
-enable_uart=1
 dtparam=uart0_console
+
+[all]
+# Boot u-boot first so we can run a/b slot
+kernel=u-boot.bin

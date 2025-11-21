@@ -145,6 +145,7 @@ hooks=pre-install;post-install
 
 [hooks]
 filename=hook
+hooks=install-check
 EOL
 		# Symlink the hook to its target
 		ln -L "${BOARD_DIR}"/rauc/hook "${FULLFS_STAGING_DIR}"/hook

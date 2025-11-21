@@ -1,3 +1,3 @@
 # GPS related config options
 BR2_PACKAGE_GPSD=y
-BR2_PACKAGE_GPSD_DEVICES="/dev/ttyUSB1"
+BR2_PACKAGE_GPSD_DEVICES=""

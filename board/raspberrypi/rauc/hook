@@ -27,6 +27,25 @@ slot-pre-install)
         # only rootfs needs to be handled
         test "$RAUC_SLOT_CLASS" = "rootfs" || exit 0
         ;;
+install-check)
+        # Check if RAUC_SYSTEM_COMPATIBLE contains satos-rpi4-64 or satos-rpi5-64
+        if [[ "$RAUC_SYSTEM_COMPATIBLE" =~ satos-rpi4-64 ]] || [[ "$RAUC_SYSTEM_COMPATIBLE" =~ satos-rpi5-64 ]]; then
+            # Check if RAUC_MF_COMPATIBLE contains satos-rpi64
+            if [[ "$RAUC_MF_COMPATIBLE" =~ satos-rpi64 ]]; then
+                echo "Compatible values validated successfully"
+                exit 0
+            else
+                echo "RAUC_MF_COMPATIBLE does not contain satos-rpi64!" 1>&2
+                exit 10
+            fi
+        else
+            # Check if RAUC_SYSTEM_COMPATIBLE matches RAUC_MF_COMPATIBLE
+            if [[ "$RAUC_SYSTEM_COMPATIBLE" != "$RAUC_MF_COMPATIBLE" ]]; then
+                echo "Compatible string does not match!" 1>&2
+                exit 10
+            fi
+        fi
+        ;;
 *)
         exit 1
         ;;
